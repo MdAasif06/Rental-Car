@@ -14,7 +14,7 @@ const Sidebar = () => {
   return (
     <div
       className="relative min-h-screen md:flex flex-col items-center pt-8
-    max-w-13 md:max-w-full border-r  border-borderColor text-sm"
+    max-w-13 md:max-w-60 w-full border-r border-borderColor text-sm"
     >
       <div className="group relative">
         <label htmlFor="image">
@@ -22,10 +22,9 @@ const Sidebar = () => {
             src={
               image
                 ? URL.createObjectURL(image)
-                : user?.image ||
-                  "https://unsplash.com/photos/grapes-wine-and-a-towel-on-the-sandy-beach-XCv0R7YwR1A"
-            }
-            alt=""
+                : user?.image || "https://unsplash.com/photos/grapes-wine-and-a-towel-on-the-sandy-beach-XCv0R7YwR1A"}
+            alt="profile"
+            className="h-9   w-9 md:h-14 md:w-14 rounded-full mx-auto"
           />
           <input
             type="file"

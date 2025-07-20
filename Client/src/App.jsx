@@ -23,11 +23,12 @@ const App = () => {
         <Route path="/cars" element={<Car />} />
         <Route path="/car-details/:id" element={<CarDetails />} />
         <Route path="/my-bookings" element={<MyBooking />} />
-        <Route path="/owner" element={<Layout />} />
-        <Route index element={<Dashboard />} />
-        <Route path="add-car" element={<AddCar />} />
-        <Route path="manage-car" element={<ManageCar />} />
-        <Route path="manage-booking" element={<ManageBooking />} />
+        <Route path="/owner" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="add-car" element={<AddCar />} />
+          <Route path="manage-cars" element={<ManageCar />} />
+          <Route path="manage-bookings" element={<ManageBooking />} />
+        </Route>
       </Routes>
 
       {!isOwnerPath && <Footer />}

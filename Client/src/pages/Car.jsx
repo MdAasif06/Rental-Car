@@ -23,7 +23,7 @@ const Car = () => {
             className="w-4.5 h-4.5 mr-2"
           />
           <input
-            onClick={(e) => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             value={input}
             type="text"
             className="w-full h-full outline-none text-gray-500"
