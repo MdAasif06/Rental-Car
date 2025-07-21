@@ -3,6 +3,7 @@ import "dotenv/config"
 import cors from "cors"
 import connectDB from "./configs/db.js"
 import userRouter from "./routes/user.routes.js"
+import ownerRouter from "./routes/owner.routes.js"
 //Initialize Express App
 const app=express()
 //database connection
@@ -19,6 +20,7 @@ app.get("/",(req,res)=>{
 })
 
 app.use("/api/user",userRouter)
+app.use("/api/owner",ownerRouter)
 
 const PORT=process.env.PORT || 3000;
 app.listen(PORT,(req,res)=>{
