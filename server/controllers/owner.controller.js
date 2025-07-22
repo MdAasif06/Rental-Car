@@ -1,8 +1,16 @@
+import { format, isAbsolute } from "path";
+import imagekit from "../configs/imageKit.js";
 import UserModel from "../models/user.model.js";
+import fs from "fs";
+import CarModel from "../models/car.model.js";
 
 export const changeRoleToOwner = async (req, res) => {
+  // console.log("Function reached"); // test if function runs
   try {
     const { _id } = req.user;
+    console.log("changeRoleToOwner function triggered");
+    // console.log(req.user)
+    // console.log(_id)
     await UserModel.findByIdAndUpdate(_id, { role: "owner" });
     res.json({ success: true, message: "Now you car list the car" });
   } catch (error) {
@@ -11,14 +19,100 @@ export const changeRoleToOwner = async (req, res) => {
   }
 };
 
-
 // API to list car
-export const addCar=async(req,res)=>{
-    try {
-        const{_id}=req.user;
-        let car=JSON.parse(req.body.carData)
-        const imageFile=req.file
-    } catch (error) {
-        
+export const addCar = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    let car = JSON.parse(req.body.carData);
+    const imageFile = req.file;
+
+    //upload image to imageKit
+    const fileBuffer = fs.readFileSync(imageFile.path);
+    const response = await imagekit.upload({
+      file: fileBuffer,
+      fileName: imageFile.originalname,
+      folder: "/cars",
+    });
+
+    //optimization through imagekit URL tranformation
+    // For URL Generation, works for both images and videos
+    let optimizedUrl = imagekit.url({
+      path: response.filePath,
+      transformation: [
+        { width: "1280" },
+        { quality: "auto" },
+        { format: "webp" },
+      ],
+    });
+    const image = optimizedUrl;
+    await CarModel.create({ ...car, owner: _id, image });
+    res.json({ success: true, message: "car added" });
+  } catch (error) {}
+};
+
+//API  to list owner car
+export const getOwnerCars = async (req, res) => {
+  try {
+    const { _id } = req.user;
+
+    const cars = UserModel.find({ owner: _id });
+    res.json({ success: true, cars });
+  } catch (error) {
+    console.log(error.message);
+    json({ success: false, message: error.message });
+  }
+};
+
+//API to toggle car avilability
+export const toggleCarAvailability = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { carId } = req.body;
+    const car = await CarModel.findById({ carId });
+
+    if (car.owner.toString() !== _id.toString()) {
+      return json({ success: false, message: "Unauthorized" });
     }
-}
+    car.isAvailable = !car.isAvailable;
+    await car.save();
+    res.json({ success: true, message: "Avilability toggle" });
+  } catch (error) {
+    console.log(error.message);
+    json({ success: false, message: error.message });
+  }
+};
+
+//API to Delete car avilability
+export const deleteCar = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { carId } = req.body;
+    const car = await CarModel.findById({ carId });
+
+    if (car.owner.toString() !== _id.toString()) {
+      return json({ success: false, message: "Unauthorized" });
+    }
+    car.owner = null;
+    car.isAvailable = false;
+
+    await car.save();
+    res.json({ success: true, message: "car removed" });
+  } catch (error) {
+    console.log(error.message);
+    json({ success: false, message: error.message });
+  }
+};
+
+//APi to get Dashboard Data
+export const getDashboardData = async (req, res) => {
+  try {
+    const { _id, role } = req.user;
+    if (role != "owner") {
+      return res.json({ success: false, message: "Unauthorized" });
+    }
+    const cars = await CarModel.find({ owner: _id });
+  } catch (error) {
+    console.log(error.message);
+    json({ success: false, message: error.message });
+  }
+};
