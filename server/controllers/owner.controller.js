@@ -3,6 +3,8 @@ import imagekit from "../configs/imageKit.js";
 import UserModel from "../models/user.model.js";
 import fs from "fs";
 import CarModel from "../models/car.model.js";
+import bookingModel from "../models/booking.model.js";
+import { create } from "domain";
 
 export const changeRoleToOwner = async (req, res) => {
   // console.log("Function reached"); // test if function runs
@@ -111,6 +113,33 @@ export const getDashboardData = async (req, res) => {
       return res.json({ success: false, message: "Unauthorized" });
     }
     const cars = await CarModel.find({ owner: _id });
+    const bookings = await bookingModel
+      .find({ owner: _id })
+      .populate("car")
+      .sort({ createdAt: -1 });
+
+    const pendingBooking = await bookingModel.find({
+      owner: _id,
+      status: "pending",
+    });
+    const confirmedBooking = await bookingModel.find({
+      owner: _id,
+      status: "confirmed",
+    });
+
+    //calculate monthly revenue from booking where status is confirmed
+    const monthlyRevenue = bookings
+      .slice()
+      .filter((booking) => booking.status === "confirmed")
+      .reduce((acc, booking) => acc + booking.price, 0);
+
+    const dashBoardData = {
+      totalCars: cars.length,
+      totalBookings: bookings.length,
+      pendingBooking: pendingBooking.length,
+      completedBookings: completedBookings.length,
+      recentBookings: bookings.slice(0, 3),
+    };
   } catch (error) {
     console.log(error.message);
     json({ success: false, message: error.message });
