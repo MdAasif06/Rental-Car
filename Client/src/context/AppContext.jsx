@@ -2,10 +2,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+
 export const AppContext = createContext();
-
-axios.default.baseURL = import.meta.env.VITE_BASE_URL;
-
 export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const currency = import.meta.env.VITE_CURENCY;
@@ -42,7 +42,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 //Function to logout to user
-const logOut=async(req,res)=>{
+const logout=async(req,res)=>{
     try {
         localStorage.removeItem('token')
         setToken(null)
@@ -74,7 +74,7 @@ const logOut=async(req,res)=>{
 
   const value = {
     navigate,currency,axios,user,setUser,token,setToken,isOwner,setIsOwner,
-    fetchUser,showlogin,setShowLogin,logOut,fetchCars,cars,setCars,picupDate,
+    fetchUser,showlogin,setShowLogin,logout,fetchCars,cars,setCars,picupDate,
     setPicupDate,returnDate,setReturnDate
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
