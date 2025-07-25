@@ -117,11 +117,11 @@ export const getDashboardData = async (req, res) => {
       .populate("car")
       .sort({ createdAt: -1 });
 
-    const pendingBooking = await bookingModel.find({
+    const pendingBookings = await bookingModel.find({
       owner: _id,
       status: "pending",
     });
-    const confirmedBooking = await bookingModel.find({
+    const completedBookings = await bookingModel.find({
       owner: _id,
       status: "confirmed",
     });
@@ -135,9 +135,10 @@ export const getDashboardData = async (req, res) => {
     const dashboardData = {
       totalCars: cars.length,
       totalBookings: bookings.length,
-      pendingBooking: pendingBooking.length,
+      pendingBookings: pendingBookings.length,
       recentBookings: bookings.slice(0, 3),
-      confirmedBooking: confirmedBooking.length,
+      // confirmedBooking: confirmedBooking.length,
+      completedBookings: completedBookings.length,
       monthlyRevenue,
     };
     res.json({ success: true, dashboardData });

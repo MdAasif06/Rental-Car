@@ -1,18 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { assets, dummyMyBookingsData } from "../assets/assets.js";
+import { useEffect, useState } from "react";
+import { assets } from "../assets/assets.js";
 import Title from "../components/Title.jsx";
+import { useAppContext } from "../context/AppContext.jsx";
+import toast from "react-hot-toast";
 
 const MyBooking = () => {
-  const [bookings, setBooking] = useState([]);
-  const currency=import.meta.env.VITE_CURENCY
+  const { axios, user, currency } = useAppContext();
+  const [bookings, setBookings] = useState([]);
+  // const currency=import.meta.env.VITE_CURENCY
 
   const fetchMyBooking = async () => {
-    setBooking(dummyMyBookingsData);
+    // setBooking(dummyMyBookingsData);
+    try {
+      const { data } = await axios.get("/api/bookings/user");
+      if (data.success) {
+        setBookings(data.bookings);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    fetchMyBooking();
-  }, []);
+    user && fetchMyBooking();
+  }, [user]);
   return (
     <div className="px-6 md:px-16 lg:px-24 xl:px-32 2xl:px-48 mt-16 text-sm max-w-7xl">
       <Title
@@ -92,10 +105,12 @@ const MyBooking = () => {
             <div className="md:col-span-1 flex flex-col justify-between gap-6">
               <div className="text-sm text-gray-500 text-right">
                 <p>Total Price</p>
-                <h1 className="text-2xl font-semibold text-primary">{currency}{booking.price}</h1>
-                <p>Booked on {booking.createdAt.split('T')[0]}</p>
+                <h1 className="text-2xl font-semibold text-primary">
+                  {currency}
+                  {booking.price}
+                </h1>
+                <p>Booked on {booking.createdAt.split("T")[0]}</p>
               </div>
-
             </div>
           </div>
         ))}

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { assets, dummyDashboardData } from "../../assets/assets.js";
+import{ useEffect, useState } from "react";
+import { assets } from "../../assets/assets.js";
 import Title from "../../components/Owner/Title";
 import { useAppContext } from "../../context/AppContext.jsx";
 import toast from "react-hot-toast";
@@ -18,7 +18,9 @@ const Dashboard = () => {
   });
 
   const dashboardCards = [
-    { title: "Total Cars", value: data.totalCars, icon: assets.carIconColored },
+    { title: "Total Cars", 
+      value: data.totalCars, 
+      icon: assets.carIconColored },
     {
       title: "Total Bookings",
       value: data.totalBookings,
@@ -52,7 +54,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (isOwner) {
       fetchDashboardData();
-      // setData(dummyDashboardData)
     }
   }, [isOwner]);
 
@@ -63,13 +64,9 @@ const Dashboard = () => {
         subtitile="Monitor overall platform performance
       including total cars booking ,revenue, and recent activities"
       />
-      <div
-        className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-8 gap-6
-      max-w-3xl"
-      >
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-8 gap-6 max-w-3xl">
         {dashboardCards.map((card, index) => (
-          <div
-            key={index}
+          <div key={index}
             className="flex gap-2 items-center justify-between p-4
             rounded-md border border-borderColor"
           >
@@ -78,10 +75,7 @@ const Dashboard = () => {
               <p className="text-lg font-semibold">{card.value}</p>
             </div>
 
-            <div
-              className=" flex items-center justify-center w-10 rounded-full
-             bg-primary/10"
-            >
+            <div className=" flex items-center justify-center w-10 rounded-full bg-primary/10">
               <img src={card.icon} alt="card-icon" className="h-4 w-4" />
             </div>
           </div>

@@ -90,7 +90,7 @@ const ManageBooking = () => {
                 <td className="p-3">
                   {booking.status === "pending" ? (
                     <select
-                      onChange={(e) =>changeBookingStatus(booking._id, e.target.value)}
+                      onChange={e=>changeBookingStatus(booking._id, e.target.value)}
                       value={booking.status}
                       className="px-2 py-1.5 mt-1 text-gray-500
                   border border-borderColor rounded-md outline-none"
