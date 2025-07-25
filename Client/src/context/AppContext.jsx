@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 export const AppContext = createContext();
+
 export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const currency = import.meta.env.VITE_CURENCY;
@@ -77,7 +78,9 @@ const logout=async(req,res)=>{
     fetchUser,showlogin,setShowLogin,logout,fetchCars,cars,setCars,picupDate,
     setPicupDate,returnDate,setReturnDate
   };
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return <AppContext.Provider value={value}>
+  {children}
+  </AppContext.Provider>;
 };
 
 export const useAppContext = () => {

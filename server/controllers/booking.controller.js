@@ -93,7 +93,7 @@ export const getOwnerBooking = async (req, res) => {
       .find({ owner: req.user._id })
       .populate("car user")
       .select("-user.password")
-      .sort({ createdAt: "-1" });
+      .sort({ createdAt: -1 });
     res.json({ success: true, bookings });
   } catch (error) {
     console.log(error.message);

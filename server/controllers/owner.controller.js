@@ -1,10 +1,10 @@
-import { format, isAbsolute } from "path";
+// import { format, isAbsolute } from "path";
 import imagekit from "../configs/imageKit.js";
 import UserModel from "../models/user.model.js";
 import fs from "fs";
 import CarModel from "../models/car.model.js";
 import bookingModel from "../models/booking.model.js";
-import { create } from "domain";
+// import { create } from "domain";
 
 export const changeRoleToOwner = async (req, res) => {
   // console.log("Function reached"); // test if function runs
@@ -56,26 +56,25 @@ export const addCar = async (req, res) => {
 export const getOwnerCars = async (req, res) => {
   try {
     const { _id } = req.user;
-
-    const cars = UserModel.find({ owner: _id });
+    const cars = await CarModel.find({ owner: _id });
     res.json({ success: true, cars });
   } catch (error) {
     console.log(error.message);
-    json({ success: false, message: error.message });
+    res.json({ success: false, message: error.message });
   }
 };
 
 //API to toggle car avilability
 export const toggleCarAvailability = async (req, res) => {
   try {
-    const { _id } = req.user;
-    const { carId } = req.body;
-    const car = await CarModel.findById({ carId });
+    const {_id} = req.user;
+    const {carId} = req.body;
+    const car = await CarModel.findById(carId);
 
     if (car.owner.toString() !== _id.toString()) {
       return json({ success: false, message: "Unauthorized" });
     }
-    car.isAvailable = !car.isAvailable;
+    car.isAvailable = !car.isAvailable; 
     await car.save();
     res.json({ success: true, message: "Avilability toggle" });
   } catch (error) {
@@ -89,7 +88,7 @@ export const deleteCar = async (req, res) => {
   try {
     const { _id } = req.user;
     const { carId } = req.body;
-    const car = await CarModel.findById({ carId });
+    const car = await CarModel.findById(carId);
 
     if (car.owner.toString() !== _id.toString()) {
       return json({ success: false, message: "Unauthorized" });
@@ -109,7 +108,7 @@ export const deleteCar = async (req, res) => {
 export const getDashboardData = async (req, res) => {
   try {
     const { _id, role } = req.user;
-    if (role != "owner") {
+    if (role !== "owner") {
       return res.json({ success: false, message: "Unauthorized" });
     }
     const cars = await CarModel.find({ owner: _id });
@@ -133,18 +132,18 @@ export const getDashboardData = async (req, res) => {
       .filter((booking) => booking.status === "confirmed")
       .reduce((acc, booking) => acc + booking.price, 0);
 
-    const dashBoardData = {
+    const dashboardData = {
       totalCars: cars.length,
       totalBookings: bookings.length,
       pendingBooking: pendingBooking.length,
-      completedBookings: completedBookings.length,
       recentBookings: bookings.slice(0, 3),
+      confirmedBooking: confirmedBooking.length,
       monthlyRevenue,
     };
-    res.json({ success: true, dashBoardData });
+    res.json({ success: true, dashboardData });
   } catch (error) {
     console.log(error.message);
-    json({ success: false, message: error.message });
+    res.json({ success: false, message: error.message });
   }
 };
 

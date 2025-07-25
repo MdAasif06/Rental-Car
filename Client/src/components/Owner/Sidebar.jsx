@@ -5,26 +5,24 @@ import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 
 const Sidebar = () => {
-  const {user,axios,fetchUser}=useAppContext();
+  const { user, axios, fetchUser } = useAppContext();
   const location = useLocation();
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState('');
 
-  const updateImage =async () => {
+  const updateImage = async () => {
     try {
-      const formData =new FormData()
-      formData.append('image',image)
+      const formData = new FormData();
+      formData.append("image", image);
 
-      const {data}=await axios.post("/api/owner/update-image",formData)
-      if(data.success){
-        fetchUser()
-        toast.success(data.message)
-        setImage('')
-      }else{
-        toast.error(error.message)
+      const { data } = await axios.post('/api/owner/update-image' , formData);
+      if (data.success) {
+        fetchUser();
+        toast.success(data.message);
+        setImage('');
+      } else {
+        toast.error(data.message);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
   return (
     <div
@@ -37,7 +35,9 @@ const Sidebar = () => {
             src={
               image
                 ? URL.createObjectURL(image)
-                : user?.image || "https://unsplash.com/photos/grapes-wine-and-a-towel-on-the-sandy-beach-XCv0R7YwR1A"}
+                : user?.image ||
+                  "https://unsplash.com/photos/grapes-wine-and-a-towel-on-the-sandy-beach-XCv0R7YwR1A"
+            }
             alt="profile"
             className="h-9   w-9 md:h-14 md:w-14 rounded-full mx-auto"
           />
