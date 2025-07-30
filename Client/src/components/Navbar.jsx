@@ -35,7 +35,7 @@ const Navbar = () => {
       ${location.pathname === "/" && "bg-light"}`}
     >
       <Link to={"/"}>
-        <motion.img whileHover={{scale:1.05}} src={assets.logo} alt="logo" className="h-8" />
+        <motion.h1 whileHover={{scale:1.05}} className="h-10 text-3xl text-primary font-extrabold" >RarCental </motion.h1>
       </Link>
       <div
         className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16

@@ -14,7 +14,7 @@ export const changeRoleToOwner = async (req, res) => {
     // console.log(req.user)
     // console.log(_id)
     await UserModel.findByIdAndUpdate(_id, { role: "owner" });
-    res.json({ success: true, message: "Now you car list the car" });
+    res.json({ success: true, message: "Now you can list the car" });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });

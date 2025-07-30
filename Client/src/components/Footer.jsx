@@ -21,10 +21,9 @@ const Footer = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            src={assets.logo}
-            alt="logo"
             className="h-8 md:h-9"
           />
+          <h1 className="h-10 text-3xl text-primary font-extrabold">RarCental</h1>
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

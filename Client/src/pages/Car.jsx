@@ -5,6 +5,7 @@ import CarCards from "../components/CarCards";
 import { useSearchParams } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import { motion } from "motion/react";
 
 const Car = () => {
   const [input, setInput] = useState("");
@@ -32,7 +33,7 @@ const Car = () => {
         car.transmission.toLowerCase().includes(input.toLowerCase())
       );
     });
-    setFilterCars(filtered)
+    setFilterCars(filtered);
   };
 
   const searchCarAvailability = async () => {
@@ -59,14 +60,22 @@ const Car = () => {
 
   return (
     <div>
-      <div className="bg-light max-md:px-4 flex flex-col items-center py-20">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="bg-light max-md:px-4 flex flex-col items-center py-20"
+      >
         <Title
           title="Available Car"
           subTitle="Browse our selection of premium
         vehciles avilable for your next adventure"
         />
 
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           className="flex items-center bg-white px-4 mt-6 max-w-140 w-full h-12
         rounded-full shadow"
         >
@@ -87,10 +96,15 @@ const Car = () => {
             alt="search"
             className="w-4.5 h-4.5 ml-2"
           />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-10">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="px-6 md:px-16 lg:px-24 xl:px-32 mt-10"
+      >
         <p className="text-gray-500 xl:px-20 max-w-7xl mx-auto">
           Showing {filterCars.length} Cars
         </p>
@@ -99,12 +113,17 @@ const Car = () => {
         xl:px-20 max-w-7xl mx-auto"
         >
           {filterCars.map((car, index) => (
-            <div key={index}>
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * index, duration: 0.4 }}
+            >
               <CarCards car={car} />
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
