@@ -18,7 +18,7 @@ export const registerUser = async (req, res) => {
         message: "Fill all the fields correctly",
       });
     }
-    const userExists = await UserModel.findOne({ email });
+    const userExists = await UserModel.findOne({email});
     if (userExists) {
       return res.json({ success: "false", message: "user alredy exists" });
     }
@@ -72,12 +72,12 @@ export const getUserData = async (req, res) => {
 };
 
 //Get all car for the frontend
-export const getCars=async(req,res)=>{
+export const getCars = async (req, res) => {
   try {
-    const cars=await carModel.find({isAvailable:true})
-    res.json({success:true,cars})
+    const cars = await carModel.find({ isAvailable: true });
+    res.json({ success: true, cars });
   } catch (error) {
-    console.log(error.message)
-    res.json({success:false,message:error.message})
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
   }
-}
+};

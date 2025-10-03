@@ -4,6 +4,8 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AppProvider } from "./context/AppContext.jsx";
 import { MotionConfig } from "motion/react";
+import 'remixicon/fonts/remixicon.css';
+
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AppProvider>

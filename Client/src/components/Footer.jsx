@@ -23,7 +23,7 @@ const Footer = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="h-8 md:h-9"
           />
-          <h1 className="h-10 text-3xl text-primary font-extrabold">RarCental</h1>
+          <h1 className="h-10"><img src={assets.logo} alt="logo" /></h1>
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

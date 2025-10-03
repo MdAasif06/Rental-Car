@@ -1,14 +1,13 @@
 import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
 
-
 export const protect = async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
     return res.json({ success: "false", message: "Not Authorized" });
   }
   try {
-    const userId = jwt.decode(token, process.env.JWT_SECRET);
+    const userId = jwt.verify(token, process.env.JWT_SECRET);
     if (!userId) {
       return res.json({ success: "false", message: "Not Authorized" });
     }

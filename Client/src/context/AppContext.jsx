@@ -23,6 +23,7 @@ export const AppProvider = ({ children }) => {
   const fetchUser = async (req, res) => {
     try {
       const { data } = await axios.get("/api/user/data");
+      // console.log(data)
       if (data.success) {
         setUser(data.user);
         setIsOwner(data.user.role === "owner");
@@ -39,30 +40,28 @@ export const AppProvider = ({ children }) => {
       const { data } = await axios.get("/api/user/cars");
       data.success ? setCars(data.cars) : toast.error(data.message);
     } catch (error) {
-        toast.error(error.message)
+      toast.error(error.message);
     }
   };
-//Function to logout to user
-const logout=async(req,res)=>{
+  //Function to logout to user
+  const logout = async (req, res) => {
     try {
-        localStorage.removeItem('token')
-        setToken(null)
-        setUser(null)
-        setIsOwner(false)
-        axios.defaults.headers.common['Authorization']=''
-        toast.success("you have been logout")
+      localStorage.removeItem("token");
+      setToken(null);
+      setUser(null);
+      setIsOwner(false);
+      axios.defaults.headers.common["Authorization"] = "";
+      toast.success("you have been logout");
     } catch (error) {
-        toast.error(error.message)
+      toast.error(error.message);
     }
-}
-
-
+  };
 
   //useEffect to retrive the token from localStorage
   useEffect(() => {
     const token = localStorage.getItem("token");
     setToken(token);
-    fetchCars()
+    fetchCars();
   }, []);
 
   //useEffect to fetch the user data when token is available
@@ -74,13 +73,28 @@ const logout=async(req,res)=>{
   }, [token]);
 
   const value = {
-    navigate,currency,axios,user,setUser,token,setToken,isOwner,setIsOwner,
-    fetchUser,showlogin,setShowLogin,logout,fetchCars,cars,setCars,pickupDate,
-    setPickupDate,returnDate,setReturnDate
+    navigate,
+    currency,
+    axios,
+    user,
+    setUser,
+    token,
+    setToken,
+    isOwner,
+    setIsOwner,
+    fetchUser,
+    showlogin,
+    setShowLogin,
+    logout,
+    fetchCars,
+    cars,
+    setCars,
+    pickupDate,
+    setPickupDate,
+    returnDate,
+    setReturnDate,
   };
-  return <AppContext.Provider value={value}>
-  {children}
-  </AppContext.Provider>;
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export const useAppContext = () => {

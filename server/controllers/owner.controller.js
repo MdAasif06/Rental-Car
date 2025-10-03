@@ -108,14 +108,12 @@ export const deleteCar = async (req, res) => {
 export const getDashboardData = async (req, res) => {
   try {
     const { _id, role } = req.user;
+    console.log(req.user)
     if (role !== "owner") {
       return res.json({ success: false, message: "Unauthorized" });
     }
     const cars = await CarModel.find({ owner: _id });
-    const bookings = await bookingModel
-      .find({ owner: _id })
-      .populate("car")
-      .sort({ createdAt: -1 });
+    const bookings = await bookingModel.find({ owner: _id }).populate("car").sort({ createdAt: -1 });
 
     const pendingBookings = await bookingModel.find({
       owner: _id,
