@@ -23,7 +23,7 @@ const FeatureSection = () => {
         <Title
           title="Featured Vehicles"
           subTitle="Explore our selection
-            of premium of vehciles avilable for your next adventure"
+          of premium of vehciles avilable for your next adventure"
         />
       </motion.div>
       <motion.div
