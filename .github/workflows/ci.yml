@@ -1,0 +1,20 @@
+name:  Rental-Car CI/CD
+
+on: 
+  push:
+     branches:
+       - main
+
+jobs:
+  learn :
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Chekout code
+        uses: actions/checkoutv@4
+
+      - name: Show messages
+        run: echo "My second GitHub Actions workflow is running!"
+
+      - name: Chek Node version
+        run: node --version
