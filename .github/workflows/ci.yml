@@ -2,19 +2,27 @@ name:  Rental-Car CI/CD
 
 on: 
   push:
-     branches:
-       - main
+     branches: [main]
+  pull_request: 
+     branches: [main]
 
 jobs:
-  learn :
+  frontend-build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Chekout code
         uses: actions/checkout@v4
 
-      - name: Show messages
-        run: echo "My second GitHub Actions workflow is running!"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: Client/package-lock.json
 
-      - name: Chek Node version
-        run: node --version
+      - name: Install frontend dependencies
+        working-directory: Client
+        run: npm run build
+        
+  
