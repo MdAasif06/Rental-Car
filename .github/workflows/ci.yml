@@ -23,6 +23,31 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: Client
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: Client
         run: npm run build
+
+  backend-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Chekout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependencies-path: server/package-lock.json
+      
+      - name: Install backend dependencies
+        working-directory: server
+        run: npm ci
+      - name: checkout backend syntax
+        working-directory: server
+        run: node --check server.js
         
   
